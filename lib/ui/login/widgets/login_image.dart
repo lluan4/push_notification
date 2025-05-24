@@ -5,17 +5,14 @@ class LoginImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 120,
-        bottom: 40,
-        left: 20,
-        right: 20,
-      ),
-      width: 100,
+    final theme = Theme.of(context);
+    return CircleAvatar(
+      radius: 50,
+      backgroundColor: theme.colorScheme.surfaceContainerLow,
       child: Image.asset(
         'assets/images/chat.png',
         fit: BoxFit.cover,
+        width: 65,
       ),
     );
   }

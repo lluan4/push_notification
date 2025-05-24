@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:push_notification/routing/routing.dart';
+import 'package:push_notification/ui/core/themes/button_custom_styles.dart';
+import 'package:push_notification/ui/core/themes/input_custom_styles.dart';
 
 void main() {
   runApp(const App());
@@ -14,25 +16,15 @@ class App extends StatelessWidget {
       title: 'FlutterChat',
       theme: ThemeData().copyWith(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0x5086F2),
+          seedColor: const Color.fromARGB(255, 63, 17, 177),
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonCustomStyles.resolve(context),
+        ),
+        inputDecorationTheme: InputCustomStyles.inputTheme(context),
       ),
       routerConfig: router,
+      debugShowCheckedModeBanner: false,
     );
   }
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     title: 'FlutterChat',
-  //     theme: ThemeData().copyWith(
-  //       colorScheme: ColorScheme.fromSeed(
-  //         seedColor: const Color(0x5086F2),
-  //       ),
-  //     ),
-  //     home: const Scaffold(
-  //       body: Center(
-  //         child: AuthScreen(),
-  //       ),
-  //     ),
-  //   );
-  // }
 }
