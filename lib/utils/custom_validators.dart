@@ -1,35 +1,39 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
-class MatchAndLength extends Validator<dynamic> {
-  MatchAndLength(this.src, this.dst);
+class MustMatchValidatorOnBlur extends Validator<dynamic> {
+  final String controlName;
+  final String matchingControlName;
 
-  final String src;
-  final String dst;
+  MustMatchValidatorOnBlur({
+    required this.controlName,
+    required this.matchingControlName,
+  }) : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    final fg = control as FormGroup;
-    final aVal = fg.control(src).value?.toString() ?? '';
-    final b = fg.control(dst);
-    final bVal = b.value?.toString() ?? '';
+    final form = control as FormGroup;
 
-    b.removeError('mustMatch');
-    b.removeError('isBiggerThan');
+    final formControl = form.control(controlName);
+    final matchingFormControl =
+        form.control(matchingControlName) as FormControl;
 
-    if (!b.touched) return null;
-
-    if (aVal != bVal || bVal.length >= aVal.length) {
-      b.setErrors({'matchAndLength': true});
+    if (!matchingFormControl.hasFocus && !matchingFormControl.touched) {
       return null;
     }
-    b.removeError('matchAndLength');
+
+    if (formControl.value != matchingFormControl.value) {
+      matchingFormControl.setErrors({'mustMatchOnBlur': true});
+    } else {
+      matchingFormControl.removeError('mustMatchOnBlur');
+    }
 
     return null;
   }
 }
 
 abstract final class CustomValidators {
-  static Validator<dynamic> matchAndLength(
+  static Validator<dynamic> mustMatchOnBlur(
           String controlName, String matchingControlName) =>
-      MatchAndLength(controlName, matchingControlName);
+      MustMatchValidatorOnBlur(
+          controlName: controlName, matchingControlName: matchingControlName);
 }

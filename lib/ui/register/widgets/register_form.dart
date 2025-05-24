@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:push_notification/ui/core/themes/input_custom_styles.dart';
 
 import 'package:push_notification/ui/register/view_models/register_view_model.dart';
+import 'package:push_notification/utils/input_decarotion.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -25,9 +27,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    final FormGroup form = widget.viewModel.form;
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
+    final FormGroup form = widget.viewModel.form;
 
     return Container(
       decoration: BoxDecoration(
@@ -55,45 +57,62 @@ class _RegisterFormState extends State<RegisterForm> {
                     style: theme.textTheme.labelMedium,
                     textAlign: TextAlign.start,
                   ),
-                  ReactiveTextField<String>(
+                  ReactiveStatusListenableBuilder(
                     formControlName: 'email',
-                    decoration: InputDecoration(
-                      hintText: 'teste@gmail.com',
-                      prefixIcon: const Icon(Icons.email),
-                      prefixIconColor: theme.colorScheme.onSurface,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    textCapitalization: TextCapitalization.none,
-                    textInputAction: TextInputAction.next,
-                    validationMessages: {
-                      ValidationMessage.required: (_) =>
-                          'O email é obrigatório.',
-                      ValidationMessage.email: (_) =>
-                          'O email deve ser válido.',
+                    builder: (context, status, child) {
+                      final form = ReactiveForm.of(context)! as FormGroup;
+                      final control = form.control('email');
+
+                      return ReactiveTextField<String>(
+                        formControlName: 'email',
+                        decoration: styledDecoration(
+                          context: context,
+                          control: control,
+                          hintText: 'teste@gmail.com',
+                          prefixIcon: const Icon(Icons.email),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.none,
+                        textInputAction: TextInputAction.next,
+                        validationMessages: {
+                          ValidationMessage.required: (_) =>
+                              'O email é obrigatório.',
+                          ValidationMessage.email: (_) => 'Email inválido',
+                        },
+                      );
                     },
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Confirme Email',
+                    'Confirmar Email',
                     style: theme.textTheme.labelMedium,
                     textAlign: TextAlign.start,
                   ),
-                  ReactiveTextField<String>(
+                  ReactiveStatusListenableBuilder(
                     formControlName: 'confirmEmail',
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.email),
-                      prefixIconColor: theme.colorScheme.onSurface,
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    textCapitalization: TextCapitalization.none,
-                    textInputAction: TextInputAction.next,
-                    validationMessages: {
-                      ValidationMessage.required: (_) =>
-                          'O email é obrigatório.',
-                      ValidationMessage.mustMatch: (_) =>
-                          'Os emails não conferem',
+                    builder: (context, status, child) {
+                      final form = ReactiveForm.of(context)! as FormGroup;
+                      final control = form.control('confirmEmail');
+
+                      return ReactiveTextField<String>(
+                        formControlName: 'confirmEmail',
+                        decoration: styledDecoration(
+                          context: context,
+                          control: control,
+                          hintText: 'teste@gmail.com',
+                          prefixIcon: const Icon(Icons.email),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        autocorrect: false,
+                        textCapitalization: TextCapitalization.none,
+                        textInputAction: TextInputAction.next,
+                        validationMessages: {
+                          ValidationMessage.required: (_) =>
+                              'O email é obrigatório.',
+                          'mustMatchOnBlur': (_) => 'Os emails não conferem',
+                        },
+                      );
                     },
                   ),
                   const SizedBox(height: 12),
@@ -154,14 +173,10 @@ class _RegisterFormState extends State<RegisterForm> {
                       ),
                     ),
                     textInputAction: TextInputAction.done,
-                    showErrors: (control) =>
-                        control.dirty &&
-                        control.hasError(ValidationMessage.mustMatch),
                     validationMessages: {
                       ValidationMessage.required: (_) =>
                           'Confirmação obrigatória',
-                      ValidationMessage.mustMatch: (_) =>
-                          'As senhas não conferem',
+                      'mustMatchOnBlur': (_) => 'As senhas não conferem',
                     },
                   ),
                   const SizedBox(height: 12),

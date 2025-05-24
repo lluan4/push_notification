@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:push_notification/utils/custom_validators.dart';
 
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -16,7 +17,7 @@ class RegisterViewModel extends ChangeNotifier {
         validators: [Validators.required],
       ),
       'password': FormControl<String>(
-        validators: [Validators.required, Validators.minLength(8)],
+        validators: [Validators.required, Validators.minLength(3)],
       ),
       'confirmPassword': FormControl<String>(
         validators: [
@@ -25,8 +26,8 @@ class RegisterViewModel extends ChangeNotifier {
       ),
     },
     validators: [
-      Validators.mustMatch('email', 'confirmEmail', markAsDirty: false),
-      Validators.mustMatch('password', 'confirmPassword', markAsDirty: false),
+      CustomValidators.mustMatchOnBlur('password', 'confirmPassword'),
+      CustomValidators.mustMatchOnBlur('email', 'confirmEmail')
     ],
   );
 
