@@ -15,42 +15,17 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  late final FormGroup form;
   bool passwordVisible = false;
   bool confirmPasswordVisible = false;
 
   @override
   void initState() {
     super.initState();
-    form = FormGroup({
-      'email': FormControl<String>(
-        validators: [Validators.required, Validators.email],
-      ),
-      'confirmEmail': FormControl<String>(
-        validators: [Validators.required],
-      ),
-      'password': FormControl<String>(
-        validators: [Validators.required, Validators.minLength(8)],
-      ),
-      'confirmPassword': FormControl<String>(
-        validators: [
-          Validators.required,
-        ],
-      ),
-    }, validators: [
-      Validators.mustMatch('email', 'confirmEmail'),
-      Validators.mustMatch('password', 'confirmPassword'),
-    ]);
-  }
-
-  @override
-  void dispose() {
-    form.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final FormGroup form = widget.viewModel.form;
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
 
