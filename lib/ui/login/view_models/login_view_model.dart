@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class LoginViewModel extends ChangeNotifier {
   LoginViewModel();
 
-  bool _isLogin = true;
-  bool get isLogin => _isLogin;
+  FormGroup get form => _form;
+  final FormGroup _form = FormGroup(
+    {
+      'email': FormControl<String>(
+        validators: [Validators.required, Validators.email],
+      ),
+      'password': FormControl<String>(
+        validators: [Validators.required, Validators.minLength(8)],
+      ),
+    },
+  );
 
-  void toggleLogin() {
-    _isLogin = !_isLogin;
-    notifyListeners();
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 }

@@ -17,7 +17,7 @@ class RegisterViewModel extends ChangeNotifier {
         validators: [Validators.required],
       ),
       'password': FormControl<String>(
-        validators: [Validators.required, Validators.minLength(3)],
+        validators: [Validators.required, Validators.minLength(8)],
       ),
       'confirmPassword': FormControl<String>(
         validators: [

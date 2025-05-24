@@ -26,8 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          widget.viewModel.isLogin ? 'Login' : 'Criar Conta',
-          key: ValueKey(widget.viewModel.isLogin),
+          'Login',
           style: TextStyle(
             color: theme.colorScheme.onPrimary,
           ),

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:push_notification/routing/routes.dart';
 import 'package:push_notification/ui/login/view_models/login_view_model.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key, required this.viewModel});
@@ -22,6 +23,7 @@ class _LoginFormState extends State<LoginForm> {
     final viewModal = widget.viewModel;
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
+    final FormGroup form = viewModal.form;
 
     return Container(
       decoration: BoxDecoration(
@@ -38,7 +40,8 @@ class _LoginFormState extends State<LoginForm> {
             horizontal: 42,
             vertical: 72,
           ),
-          child: Form(
+          child: ReactiveForm(
+            formGroup: form,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -47,9 +50,10 @@ class _LoginFormState extends State<LoginForm> {
                   style: theme.textTheme.labelMedium,
                   textAlign: TextAlign.start,
                 ),
-                TextFormField(
+                ReactiveTextField<String>(
+                  formControlName: 'email',
                   decoration: InputDecoration(
-                    hintText: 'teste@gmail.com',
+                    hintText: 'Digite seu email',
                     prefixIcon: const Icon(Icons.email),
                     prefixIconColor: theme.colorScheme.onSurface,
                   ),
@@ -57,6 +61,10 @@ class _LoginFormState extends State<LoginForm> {
                   autocorrect: false,
                   textCapitalization: TextCapitalization.none,
                   textInputAction: TextInputAction.next,
+                  validationMessages: {
+                    ValidationMessage.required: (_) => 'O email é obrigatório.',
+                    ValidationMessage.email: (_) => 'O email deve ser válido.',
+                  },
                 ),
                 const SizedBox(height: 12),
                 Text(
@@ -64,9 +72,11 @@ class _LoginFormState extends State<LoginForm> {
                   style: theme.textTheme.labelMedium,
                   textAlign: TextAlign.start,
                 ),
-                TextFormField(
+                ReactiveTextField<String>(
+                  formControlName: 'password',
+                  obscureText: !_passwordVisible,
                   decoration: InputDecoration(
-                    hintText: '123@Senha',
+                    hintText: 'Digite sua senha',
                     prefixIcon: const Icon(Icons.lock),
                     prefixIconColor: theme.colorScheme.onSurface,
                     suffixIconColor: theme.colorScheme.onSurface,
@@ -83,15 +93,24 @@ class _LoginFormState extends State<LoginForm> {
                       },
                     ),
                   ),
-                  obscureText: !_passwordVisible,
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
+                  validationMessages: {
+                    ValidationMessage.required: (_) => 'Senha é obrigatório',
+                    ValidationMessage.minLength: (_) => 'Mínimo 8 caracteres',
+                  },
                 ),
                 const SizedBox(height: 12),
                 SizedBox(
-                  key: ValueKey(viewModal.isLogin),
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (form.valid) {
+                        debugPrint(form.value.toString());
+                      } else {
+                        form.markAllAsTouched();
+                        debugPrint('Formulário inválido');
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,

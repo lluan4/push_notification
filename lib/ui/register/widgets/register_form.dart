@@ -1,10 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:push_notification/ui/core/themes/input_custom_styles.dart';
 
 import 'package:push_notification/ui/register/view_models/register_view_model.dart';
-import 'package:push_notification/utils/input_decarotion.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -57,30 +55,22 @@ class _RegisterFormState extends State<RegisterForm> {
                     style: theme.textTheme.labelMedium,
                     textAlign: TextAlign.start,
                   ),
-                  ReactiveStatusListenableBuilder(
+                  ReactiveTextField<String>(
                     formControlName: 'email',
-                    builder: (context, status, child) {
-                      final form = ReactiveForm.of(context)! as FormGroup;
-                      final control = form.control('email');
-
-                      return ReactiveTextField<String>(
-                        formControlName: 'email',
-                        decoration: styledDecoration(
-                          context: context,
-                          control: control,
-                          hintText: 'teste@gmail.com',
-                          prefixIcon: const Icon(Icons.email),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        autocorrect: false,
-                        textCapitalization: TextCapitalization.none,
-                        textInputAction: TextInputAction.next,
-                        validationMessages: {
-                          ValidationMessage.required: (_) =>
-                              'O email é obrigatório.',
-                          ValidationMessage.email: (_) => 'Email inválido',
-                        },
-                      );
+                    decoration: InputDecoration(
+                      hintText: 'Digite seu email',
+                      prefixIcon: const Icon(Icons.email),
+                      prefixIconColor: theme.colorScheme.onSurface,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    textInputAction: TextInputAction.next,
+                    validationMessages: {
+                      ValidationMessage.required: (_) =>
+                          'O email é obrigatório.',
+                      ValidationMessage.email: (_) =>
+                          'O email deve ser válido.',
                     },
                   ),
                   const SizedBox(height: 12),
@@ -89,30 +79,21 @@ class _RegisterFormState extends State<RegisterForm> {
                     style: theme.textTheme.labelMedium,
                     textAlign: TextAlign.start,
                   ),
-                  ReactiveStatusListenableBuilder(
+                  ReactiveTextField<String>(
                     formControlName: 'confirmEmail',
-                    builder: (context, status, child) {
-                      final form = ReactiveForm.of(context)! as FormGroup;
-                      final control = form.control('confirmEmail');
-
-                      return ReactiveTextField<String>(
-                        formControlName: 'confirmEmail',
-                        decoration: styledDecoration(
-                          context: context,
-                          control: control,
-                          hintText: 'teste@gmail.com',
-                          prefixIcon: const Icon(Icons.email),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        autocorrect: false,
-                        textCapitalization: TextCapitalization.none,
-                        textInputAction: TextInputAction.next,
-                        validationMessages: {
-                          ValidationMessage.required: (_) =>
-                              'O email é obrigatório.',
-                          'mustMatchOnBlur': (_) => 'Os emails não conferem',
-                        },
-                      );
+                    decoration: InputDecoration(
+                      hintText: 'Digite seu email novamente',
+                      prefixIcon: const Icon(Icons.email),
+                      prefixIconColor: theme.colorScheme.onSurface,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    textInputAction: TextInputAction.next,
+                    validationMessages: {
+                      ValidationMessage.required: (_) =>
+                          'O email é obrigatório.',
+                      'mustMatchOnBlur': (_) => 'Os emails não conferem',
                     },
                   ),
                   const SizedBox(height: 12),
@@ -125,7 +106,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     formControlName: 'password',
                     obscureText: !passwordVisible,
                     decoration: InputDecoration(
-                      hintText: '123@Senha',
+                      hintText: 'Digite sua senha',
                       prefixIcon: const Icon(Icons.lock),
                       prefixIconColor: theme.colorScheme.onSurface,
                       suffixIconColor: theme.colorScheme.onSurface,
@@ -158,6 +139,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     formControlName: 'confirmPassword',
                     obscureText: !confirmPasswordVisible,
                     decoration: InputDecoration(
+                      hintText: 'Digite sua senha novamente',
                       prefixIcon: const Icon(Icons.lock),
                       prefixIconColor: theme.colorScheme.onSurface,
                       suffixIconColor: theme.colorScheme.onSurface,
