@@ -18,23 +18,12 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool _passwordVisible = false;
 
-  final FormGroup _form = FormGroup(
-    {
-      LoginFormControlsName.email: FormControl<String>(
-        validators: [Validators.required, Validators.email],
-      ),
-      LoginFormControlsName.password: FormControl<String>(
-        validators: [Validators.required, Validators.minLength(8)],
-      ),
-    },
-  );
-
   @override
   Widget build(BuildContext context) {
     final viewModal = widget.viewModel;
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
-    final FormGroup form = _form;
+    final FormGroup form = viewModal.form;
 
     void handleLogin() async {
       if (!form.valid) {

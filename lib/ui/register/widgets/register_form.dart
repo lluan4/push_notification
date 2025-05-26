@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:push_notification/ui/register/view_models/register_view_model.dart';
-import 'package:push_notification/utils/custom_validators.dart';
+
 import 'package:reactive_forms/reactive_forms.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -19,29 +19,6 @@ class _RegisterFormState extends State<RegisterForm> {
   bool passwordVisible = false;
   bool confirmPasswordVisible = false;
 
-  final FormGroup _form = FormGroup(
-    {
-      'email': FormControl<String>(
-        validators: [Validators.required, Validators.email],
-      ),
-      'confirmEmail': FormControl<String>(
-        validators: [Validators.required],
-      ),
-      'password': FormControl<String>(
-        validators: [Validators.required, Validators.minLength(8)],
-      ),
-      'confirmPassword': FormControl<String>(
-        validators: [
-          Validators.required,
-        ],
-      ),
-    },
-    validators: [
-      CustomValidators.mustMatchOnBlur('password', 'confirmPassword'),
-      CustomValidators.mustMatchOnBlur('email', 'confirmEmail')
-    ],
-  );
-
   @override
   void initState() {
     super.initState();
@@ -51,7 +28,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
-    final FormGroup form = _form;
+    final FormGroup form = widget.viewModel.form;
 
     void onSubmit() async {
       if (!form.valid) {

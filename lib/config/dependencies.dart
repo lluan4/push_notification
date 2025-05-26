@@ -7,7 +7,7 @@ import 'package:push_notification/data/services/api/auth_api_client.dart';
 List<SingleChildWidget> get providersRemote {
   return [
     Provider(create: (_) => AuthApiClient()),
-    ChangeNotifierProvider<AuthRepository>(
+    ChangeNotifierProvider(
       create: (context) => AuthRepositoryRemote(
         authApiClient: context.read(),
       ) as AuthRepository,

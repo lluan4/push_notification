@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:push_notification/data/repositories/auth/auth_repository.dart';
-import 'package:push_notification/data/repositories/auth/auth_repository_remote.dart';
 import 'package:push_notification/utils/result.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 abstract final class LoginFormControlsName {
   static const String email = 'email';
@@ -15,6 +15,18 @@ class LoginViewModel extends ChangeNotifier {
   });
 
   final AuthRepository authRepository;
+
+  get form => _form;
+  final FormGroup _form = FormGroup(
+    {
+      LoginFormControlsName.email: FormControl<String>(
+        validators: [Validators.required, Validators.email],
+      ),
+      LoginFormControlsName.password: FormControl<String>(
+        validators: [Validators.required, Validators.minLength(8)],
+      ),
+    },
+  );
 
   Future<String?> submit((String, String) credentials) async {
     final (email, password) = credentials;
@@ -41,5 +53,11 @@ class LoginViewModel extends ChangeNotifier {
           return 'Erro inesperado: $error';
         }
     }
+  }
+
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
   }
 }

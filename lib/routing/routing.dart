@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:push_notification/data/repositories/auth/auth_repository.dart';
+import 'package:push_notification/data/repositories/auth/auth_status.dart';
 import 'package:push_notification/routing/routes.dart';
+import 'package:push_notification/ui/chat/view_models/chat_view_model.dart';
 import 'package:push_notification/ui/chat/widgets/chat_screen.dart';
+import 'package:push_notification/ui/core/widgets/splash_screen.dart';
 import 'package:push_notification/ui/login/view_models/login_view_model.dart';
 import 'package:push_notification/ui/login/widgets/login_screen.dart';
 import 'package:push_notification/ui/register/view_models/register_view_model.dart';
@@ -16,6 +20,12 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
       redirect: _redirect,
       refreshListenable: authRepository,
       routes: [
+        GoRoute(
+          path: Routes.splash,
+          builder: (context, state) {
+            return const SplashScreen();
+          },
+        ),
         GoRoute(
           path: Routes.login,
           builder: (context, state) {
@@ -31,7 +41,7 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
           builder: (context, state) {
             return RegisterScreen(
               viewModel: RegisterViewModel(
-                authRepository: context.read<AuthRepository>(),
+                authRepository: context.read(),
               ),
             );
           },
@@ -40,22 +50,25 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
           path: Routes.chat,
           name: 'chat',
           builder: (context, state) {
-            return const ChatScreen();
+            return ChatScreen(
+              viewModel: ChatViewModel(
+                authRepository: context.read(),
+              ),
+            );
           },
         ),
       ],
     );
 
 Future<String?> _redirect(BuildContext context, GoRouterState state) async {
-  final loggedIn = await context.read<AuthRepository>().isAuthenticated;
+  final repo = context.read<AuthRepository>();
+  final loggedIn = await repo.isAuthenticated;
   final loggingIn = state.matchedLocation == Routes.login;
-  if (!loggedIn) {
-    return Routes.login;
-  }
+  final loading = repo.status == AuthStatus.loading;
 
-  if (loggingIn) {
-    return Routes.chat;
-  }
+  if (loading) return Routes.splash;
+  if (!loggedIn) return Routes.login;
+  if (loggingIn) return Routes.chat;
 
   return null;
 }

@@ -2,16 +2,26 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:push_notification/data/repositories/auth/auth_repository.dart';
+import 'package:push_notification/data/repositories/auth/auth_status.dart';
 import 'package:push_notification/data/services/api/auth_api_client.dart';
 import 'package:push_notification/data/services/models/auth_request/auth_request.dart';
 import 'package:push_notification/data/services/models/auth_response/auth_response.dart';
 import 'package:push_notification/utils/result.dart';
 
 class AuthRepositoryRemote extends AuthRepository {
-  AuthRepositoryRemote({required this.authApiClient});
+  AuthRepositoryRemote({required this.authApiClient}) {
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        _status = user == null
+            ? AuthStatus.unauthenticated
+            : AuthStatus.authenticated;
+        notifyListeners();
+      },
+    );
+  }
 
   final AuthApiClient authApiClient;
-
+  AuthStatus _status = AuthStatus.loading;
   bool _isLoggedIn = false;
 
   @override
@@ -59,4 +69,7 @@ class AuthRepositoryRemote extends AuthRepository {
 
   @override
   Future<bool> get isAuthenticated async => _isLoggedIn;
+
+  @override
+  AuthStatus get status => _status;
 }
