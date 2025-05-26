@@ -51,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
                   textAlign: TextAlign.start,
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'email',
+                  formControlName: LoginFormControlsName.email,
                   decoration: InputDecoration(
                     hintText: 'Digite seu email',
                     prefixIcon: const Icon(Icons.email),
@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
                   textAlign: TextAlign.start,
                 ),
                 ReactiveTextField<String>(
-                  formControlName: 'password',
+                  formControlName: LoginFormControlsName.password,
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
                     hintText: 'Digite sua senha',
@@ -103,17 +103,10 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (form.valid) {
-                        debugPrint(form.value.toString());
-                      } else {
-                        form.markAllAsTouched();
-                        debugPrint('Formulário inválido');
-                      }
-                    },
+                    onPressed: () => viewModal.submit(),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: theme.colorScheme.primary,
+                      foregroundColor: theme.colorScheme.onPrimary,
                     ),
                     child: const Text(
                       'Login',

@@ -3,7 +3,14 @@ import 'package:push_notification/routing/routing.dart';
 import 'package:push_notification/ui/core/themes/button_custom_styles.dart';
 import 'package:push_notification/ui/core/themes/input_custom_styles.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const App());
 }
 
