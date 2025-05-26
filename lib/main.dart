@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
+import 'package:push_notification/config/dependencies.dart';
 import 'package:push_notification/routing/routing.dart';
 import 'package:push_notification/ui/core/themes/button_custom_styles.dart';
 import 'package:push_notification/ui/core/themes/input_custom_styles.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,7 +14,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const App());
+
+  runApp(MultiProvider(providers: providersRemote, child: const App()));
+  // runApp(const App());
 }
 
 class App extends StatelessWidget {
@@ -30,7 +35,7 @@ class App extends StatelessWidget {
         ),
         inputDecorationTheme: InputCustomStyles.inputTheme(context),
       ),
-      routerConfig: router,
+      routerConfig: router(context.read()),
       debugShowCheckedModeBanner: false,
     );
   }

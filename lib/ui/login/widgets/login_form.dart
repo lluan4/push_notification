@@ -18,12 +18,45 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   bool _passwordVisible = false;
 
+  final FormGroup _form = FormGroup(
+    {
+      LoginFormControlsName.email: FormControl<String>(
+        validators: [Validators.required, Validators.email],
+      ),
+      LoginFormControlsName.password: FormControl<String>(
+        validators: [Validators.required, Validators.minLength(8)],
+      ),
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     final viewModal = widget.viewModel;
     final theme = Theme.of(context);
     final meadiaQuery = MediaQuery.of(context);
-    final FormGroup form = viewModal.form;
+    final FormGroup form = _form;
+
+    void handleLogin() async {
+      if (!form.valid) {
+        form.markAllAsTouched();
+        return;
+      }
+      if (!context.mounted) return;
+
+      final scaffoldMessager = ScaffoldMessenger.of(context);
+      final email = form.control(LoginFormControlsName.email).value;
+      final password = form.control(LoginFormControlsName.password).value;
+      final errorMessage = await viewModal.submit((email, password));
+
+      if (errorMessage == null) return;
+
+      scaffoldMessager.showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: theme.colorScheme.error,
+        ),
+      );
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -103,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () => viewModal.submit(),
+                    onPressed: handleLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
                       foregroundColor: theme.colorScheme.onPrimary,
