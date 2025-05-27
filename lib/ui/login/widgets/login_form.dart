@@ -22,7 +22,6 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final viewModal = widget.viewModel;
     final theme = Theme.of(context);
-    final meadiaQuery = MediaQuery.of(context);
     final FormGroup form = viewModal.form;
 
     void handleLogin() async {

@@ -47,11 +47,11 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
         ),
         GoRoute(
           path: Routes.chat,
-          name: 'chat',
           builder: (context, state) {
             return ChatScreen(
               viewModel: ChatViewModel(
                 authRepository: context.read(),
+                chatRepository: context.read(),
               ),
             );
           },
@@ -59,15 +59,30 @@ GoRouter router(AuthRepository authRepository) => GoRouter(
       ],
     );
 
+const _publicRoutes = <String>{
+  Routes.splash,
+  Routes.login,
+  Routes.register,
+};
+
+bool _isPublic(String location) =>
+    _publicRoutes.any((public) => location.startsWith(public));
+
 Future<String?> _redirect(BuildContext context, GoRouterState state) async {
   final repo = context.read<AuthRepository>();
+  final location = state.matchedLocation;
+  final isPublic = _isPublic(location);
   final loggedIn = await repo.isAuthenticated;
-  final loggingIn = state.matchedLocation == Routes.login;
   final loading = repo.status == AuthStatus.loading;
 
   if (loading) return Routes.splash;
-  if (!loggedIn) return Routes.login;
-  if (loggingIn) return Routes.chat;
 
+  if (isPublic && !loggedIn) return null;
+
+  if (loggedIn && (location == Routes.login || location == Routes.register)) {
+    return Routes.chat;
+  }
+
+  if (!loggedIn) return Routes.login;
   return null;
 }

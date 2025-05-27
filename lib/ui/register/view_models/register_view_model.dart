@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:push_notification/data/repositories/auth/auth_repository.dart';
+import 'package:push_notification/data/services/api/models/auth_request/auth_request.dart';
 import 'package:push_notification/utils/custom_validators.dart';
 import 'package:push_notification/utils/result.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -13,6 +14,9 @@ class RegisterViewModel extends ChangeNotifier {
   get form => _form;
   final FormGroup _form = FormGroup(
     {
+      'userName': FormControl<String>(
+        validators: [Validators.required, Validators.minLength(3)],
+      ),
       'email': FormControl<String>(
         validators: [Validators.required, Validators.email],
       ),
@@ -34,13 +38,11 @@ class RegisterViewModel extends ChangeNotifier {
     ],
   );
 
-  Future<String?> submit((String, String) credentials) async {
-    final (email, password) = credentials;
+  Future<String?> submit((String, String, String) credentials) async {
+    final (email, password, userName) = credentials;
 
     final result = await authRepository.register(
-      email: email,
-      password: password,
-    );
+        AuthRequest(userName: userName, email: email, password: password));
 
     switch (result) {
       case Ok():

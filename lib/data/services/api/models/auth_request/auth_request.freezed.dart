@@ -20,6 +20,7 @@ AuthRequest _$AuthRequestFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthRequest {
+  String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
 
@@ -39,7 +40,7 @@ abstract class $AuthRequestCopyWith<$Res> {
           AuthRequest value, $Res Function(AuthRequest) then) =
       _$AuthRequestCopyWithImpl<$Res, AuthRequest>;
   @useResult
-  $Res call({String email, String password});
+  $Res call({String userName, String email, String password});
 }
 
 /// @nodoc
@@ -57,10 +58,15 @@ class _$AuthRequestCopyWithImpl<$Res, $Val extends AuthRequest>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userName = null,
     Object? email = null,
     Object? password = null,
   }) {
     return _then(_value.copyWith(
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$AuthRequestImplCopyWith<$Res>
       __$$AuthRequestImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String email, String password});
+  $Res call({String userName, String email, String password});
 }
 
 /// @nodoc
@@ -97,10 +103,15 @@ class __$$AuthRequestImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? userName = null,
     Object? email = null,
     Object? password = null,
   }) {
     return _then(_$AuthRequestImpl(
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
@@ -116,11 +127,14 @@ class __$$AuthRequestImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthRequestImpl implements _AuthRequest {
-  const _$AuthRequestImpl({required this.email, required this.password});
+  const _$AuthRequestImpl(
+      {required this.userName, required this.email, required this.password});
 
   factory _$AuthRequestImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthRequestImplFromJson(json);
 
+  @override
+  final String userName;
   @override
   final String email;
   @override
@@ -128,7 +142,7 @@ class _$AuthRequestImpl implements _AuthRequest {
 
   @override
   String toString() {
-    return 'AuthRequest(email: $email, password: $password)';
+    return 'AuthRequest(userName: $userName, email: $email, password: $password)';
   }
 
   @override
@@ -136,6 +150,8 @@ class _$AuthRequestImpl implements _AuthRequest {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthRequestImpl &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password));
@@ -143,7 +159,7 @@ class _$AuthRequestImpl implements _AuthRequest {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, password);
+  int get hashCode => Object.hash(runtimeType, userName, email, password);
 
   /// Create a copy of AuthRequest
   /// with the given fields replaced by the non-null parameter values.
@@ -163,12 +179,15 @@ class _$AuthRequestImpl implements _AuthRequest {
 
 abstract class _AuthRequest implements AuthRequest {
   const factory _AuthRequest(
-      {required final String email,
+      {required final String userName,
+      required final String email,
       required final String password}) = _$AuthRequestImpl;
 
   factory _AuthRequest.fromJson(Map<String, dynamic> json) =
       _$AuthRequestImpl.fromJson;
 
+  @override
+  String get userName;
   @override
   String get email;
   @override

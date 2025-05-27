@@ -36,24 +36,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ),
       ),
-      body: Stack(
-        clipBehavior: Clip.none,
-        fit: StackFit.expand,
-        children: [
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: RegisterForm(
-              viewModel: widget.viewModel,
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: meadiaQuery.size.height * 0.75,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
             ),
           ),
-          Positioned(
-            top: meadiaQuery.size.height * 0.02,
-            left: meadiaQuery.size.width * 0.38,
-            child: const LoginImage(),
+          child: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.expand,
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: RegisterForm(
+                  viewModel: widget.viewModel,
+                ),
+              ),
+              Positioned(
+                top: -50,
+                left: (meadiaQuery.size.width * 0.5) - 50,
+                child: const LoginImage(),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
