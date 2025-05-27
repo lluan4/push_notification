@@ -47,117 +47,107 @@ class _LoginFormState extends State<LoginForm> {
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainer,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(45),
-          topRight: Radius.circular(45),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 42,
+          vertical: 72,
         ),
-      ),
-      height: meadiaQuery.size.height * 0.84,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 42,
-            vertical: 72,
-          ),
-          child: ReactiveForm(
-            formGroup: form,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Email',
-                  style: theme.textTheme.labelMedium,
-                  textAlign: TextAlign.start,
+        child: ReactiveForm(
+          formGroup: form,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Email',
+                style: theme.textTheme.labelMedium,
+                textAlign: TextAlign.start,
+              ),
+              ReactiveTextField<String>(
+                formControlName: LoginFormControlsName.email,
+                decoration: InputDecoration(
+                  hintText: 'Digite seu email',
+                  prefixIcon: const Icon(Icons.email),
+                  prefixIconColor: theme.colorScheme.onSurface,
                 ),
-                ReactiveTextField<String>(
-                  formControlName: LoginFormControlsName.email,
-                  decoration: InputDecoration(
-                    hintText: 'Digite seu email',
-                    prefixIcon: const Icon(Icons.email),
-                    prefixIconColor: theme.colorScheme.onSurface,
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  textCapitalization: TextCapitalization.none,
-                  textInputAction: TextInputAction.next,
-                  validationMessages: {
-                    ValidationMessage.required: (_) => 'O email é obrigatório.',
-                    ValidationMessage.email: (_) => 'O email deve ser válido.',
-                  },
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Senha',
-                  style: theme.textTheme.labelMedium,
-                  textAlign: TextAlign.start,
-                ),
-                ReactiveTextField<String>(
-                  formControlName: LoginFormControlsName.password,
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    hintText: 'Digite sua senha',
-                    prefixIcon: const Icon(Icons.lock),
-                    prefixIconColor: theme.colorScheme.onSurface,
-                    suffixIconColor: theme.colorScheme.onSurface,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                textCapitalization: TextCapitalization.none,
+                textInputAction: TextInputAction.next,
+                validationMessages: {
+                  ValidationMessage.required: (_) => 'O email é obrigatório.',
+                  ValidationMessage.email: (_) => 'O email deve ser válido.',
+                },
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Senha',
+                style: theme.textTheme.labelMedium,
+                textAlign: TextAlign.start,
+              ),
+              ReactiveTextField<String>(
+                formControlName: LoginFormControlsName.password,
+                obscureText: !_passwordVisible,
+                decoration: InputDecoration(
+                  hintText: 'Digite sua senha',
+                  prefixIcon: const Icon(Icons.lock),
+                  prefixIconColor: theme.colorScheme.onSurface,
+                  suffixIconColor: theme.colorScheme.onSurface,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
-                  ),
-                  textInputAction: TextInputAction.next,
-                  validationMessages: {
-                    ValidationMessage.required: (_) => 'Senha é obrigatório',
-                    ValidationMessage.minLength: (_) => 'Mínimo 8 caracteres',
-                  },
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: handleLogin,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
-                    ),
-                    child: const Text(
-                      'Login',
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
                   ),
                 ),
-                const SizedBox(height: 12),
-                Center(
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        const TextSpan(text: "Não tem uma conta? "),
-                        TextSpan(
-                          text: "Criar uma conta",
-                          style: TextStyle(
-                            color: theme.colorScheme.primary,
-                            fontSize: theme.textTheme.bodyLarge?.fontSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => context.push(Routes.register),
+                textInputAction: TextInputAction.next,
+                validationMessages: {
+                  ValidationMessage.required: (_) => 'Senha é obrigatório',
+                  ValidationMessage.minLength: (_) => 'Mínimo 8 caracteres',
+                },
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: handleLogin,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colorScheme.primary,
+                    foregroundColor: theme.colorScheme.onPrimary,
+                  ),
+                  child: const Text(
+                    'Login',
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Center(
+                child: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(text: "Não tem uma conta? "),
+                      TextSpan(
+                        text: "Criar uma conta",
+                        style: TextStyle(
+                          color: theme.colorScheme.primary,
+                          fontSize: theme.textTheme.bodyLarge?.fontSize,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => context.push(Routes.register),
+                      ),
+                    ],
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
