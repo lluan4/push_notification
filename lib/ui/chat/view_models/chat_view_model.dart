@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:push_notification/data/repositories/auth/auth_repository.dart';
 import 'package:push_notification/data/repositories/chat/chat_repository.dart';
@@ -17,6 +18,14 @@ class ChatViewModel extends ChangeNotifier {
           .collection('chat')
           .orderBy('createdAt', descending: true)
           .snapshots();
+
+  get firebaseAuth => FirebaseAuth.instance.currentUser;
+
+  void setupPushNotifications() async {
+    final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission();
+    fcm.subscribeToTopic('chat');
+  }
 
   Future<void> logout() async {
     await authRepository.logout();

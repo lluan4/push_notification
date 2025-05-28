@@ -8,6 +8,7 @@ import 'package:push_notification/utils/result.dart';
 abstract class AuthRepository extends ChangeNotifier {
   Future<bool> get isAuthenticated;
   AuthStatus get status;
+  dynamic get authenticatedUser;
 
   Future<Result<void>> register(AuthRequest request);
 

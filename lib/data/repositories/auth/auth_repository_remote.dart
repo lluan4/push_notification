@@ -25,6 +25,9 @@ class AuthRepositoryRemote extends AuthRepository {
   bool _isLoggedIn = false;
 
   @override
+  dynamic get authenticatedUser => FirebaseAuth.instance.currentUser;
+
+  @override
   Future<Result<void>> register(AuthRequest request) async {
     final result = await authApiClient.register(request);
 

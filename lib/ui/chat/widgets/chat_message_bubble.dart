@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// A ChatMessageBubble for showing a single chat message on the ChatScreen.
 class ChatMessageBubble extends StatelessWidget {
   // Create a message bubble which is meant to be the first in the sequence.
   const ChatMessageBubble.first({
@@ -51,11 +50,13 @@ class ChatMessageBubble extends StatelessWidget {
             // Align user image to the right, if the message is from me.
             right: isMe ? 0 : null,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                userImage!,
-              ),
               backgroundColor: theme.colorScheme.primary.withAlpha(180),
               radius: 23,
+              child: Icon(
+                Icons.person,
+                size: 24,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
           ),
         Container(

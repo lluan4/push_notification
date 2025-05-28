@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:push_notification/data/repositories/chat/chat_repository.dart';
 import 'package:push_notification/data/services/api/api_client.dart';
 import 'package:push_notification/data/services/api/models/chat/chat_api_model.dart';

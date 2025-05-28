@@ -28,7 +28,6 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final meadiaQuery = MediaQuery.of(context);
     final FormGroup form = widget.viewModel.form;
 
     void onSubmit() async {
